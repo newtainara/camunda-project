@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0br86k6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.10.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_1oxhlk9" isExecutable="true" camunda:historyTimeToLive="10">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0xrnf62</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_1534mpb" name="receber solicitação de pagamento">
+      <bpmn:incoming>Flow_0xrnf62</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h28k3r</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0xrnf62" sourceRef="StartEvent_1" targetRef="Activity_1534mpb" />
+    <bpmn:sequenceFlow id="Flow_1h28k3r" sourceRef="Activity_1534mpb" targetRef="Activity_0lb1r2c" />
+    <bpmn:sequenceFlow id="Flow_0qzdt2d" sourceRef="Activity_0lb1r2c" targetRef="Activity_1xi5u7g" />
+    <bpmn:task id="Activity_16f3q1m" name="aguardar pagamento e liberar saida">
+      <bpmn:incoming>Flow_183qcen</bpmn:incoming>
+      <bpmn:outgoing>Flow_1mimjw2</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_183qcen" sourceRef="Activity_1xi5u7g" targetRef="Activity_16f3q1m" />
+    <bpmn:sequenceFlow id="Flow_1mimjw2" sourceRef="Activity_16f3q1m" targetRef="Activity_0rddhty" />
+    <bpmn:serviceTask id="Activity_0lb1r2c" name="verificar tempo no estacionamento" camunda:delegateExpression="${verifyTimeInParkingDelegate}">
+      <bpmn:incoming>Flow_1h28k3r</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qzdt2d</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1xi5u7g" name="cobrar pela chave pix" camunda:delegateExpression="${generatePixMessageDelegate}">
+      <bpmn:incoming>Flow_0qzdt2d</bpmn:incoming>
+      <bpmn:outgoing>Flow_183qcen</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0rddhty" name="enviar email e sms para o customer sucess" camunda:delegateExpression="${customerSucessDelegate}">
+      <bpmn:incoming>Flow_1mimjw2</bpmn:incoming>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1oxhlk9">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1534mpb_di" bpmnElement="Activity_1534mpb">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_16f3q1m_di" bpmnElement="Activity_16f3q1m">
+        <dc:Bounds x="750" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1iux6j9_di" bpmnElement="Activity_0lb1r2c">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06hy0vw_di" bpmnElement="Activity_1xi5u7g">
+        <dc:Bounds x="590" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0yhtxn1_di" bpmnElement="Activity_0rddhty">
+        <dc:Bounds x="910" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0xrnf62_di" bpmnElement="Flow_0xrnf62">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h28k3r_di" bpmnElement="Flow_1h28k3r">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qzdt2d_di" bpmnElement="Flow_0qzdt2d">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="590" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_183qcen_di" bpmnElement="Flow_183qcen">
+        <di:waypoint x="690" y="117" />
+        <di:waypoint x="750" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mimjw2_di" bpmnElement="Flow_1mimjw2">
+        <di:waypoint x="850" y="117" />
+        <di:waypoint x="910" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
